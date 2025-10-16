@@ -3,28 +3,25 @@ orca.py
 =======
 Robot wrapper for the ORCA robotic hand.
 
-This class provides the standard robot API expected by Open‑Teach:
+This class provides the standard robot API expected by OpenTeach:
     - get_state()
     - move_robot()
     - home_robot()
 
-Instead of hard‑coding joints, it *auto‑loads* the correct joint names
-and limits directly from the ORCA‑core model YAML file, ensuring it is
-always up‑to‑date with the hardware configuration.
+Instead of hard-coding joints, it *auto-loads* the correct joint names
+and limits directly from the ORCA-core model YAML file, ensuring it is
+always up-to-date with the hardware configuration.
 
-The rest of Open‑Teach (operators, teleop, etc.) can then stay generic.
+The rest of OpenTeach (operators, teleop, etc.) can then stay generic.
 """
 
-import importlib.resources as pkg
+import os
 from pathlib import Path
 import yaml
 import numpy as np
 
-# Low‑level ROS communication bridge
+# Low-level ROS communication bridge
 from openteach.ros_links.orca_control import DexArmControl
-
-# ORCA‑core must be installed (pip install -e ./orca_core)
-import orca_core
 
 
 # ---------------------------------------------------------------------------
@@ -38,8 +35,18 @@ def _load_model_yaml(model: str) -> dict:
     """
     Load the YAML configuration file for the selected ORCA hand model.
     """
-    cfg_path = Path(pkg.files(orca_core)) / f"models/{model}/config.yaml"
-    return yaml.safe_load(cfg_path.read_text())
+    # Path to orca_core models directory
+    orca_core_path = Path(__file__).parent.parent.parent / "orca_core" / "orca_core"
+    cfg_path = orca_core_path / "models" / model / "config.yaml"
+    
+    if not cfg_path.exists():
+        raise FileNotFoundError(
+            f"ORCA model config not found at {cfg_path}. "
+            f"Make sure orca_core is installed."
+        )
+    
+    with open(cfg_path, 'r') as f:
+        return yaml.safe_load(f)
 
 
 # ---------------------------------------------------------------------------
@@ -48,33 +55,38 @@ def _load_model_yaml(model: str) -> dict:
 
 class OrcaHand:
     """
-    Open‑Teach robot wrapper for a single ORCA hand.
-    Auto-syncs with ORCA‑core's YAML and delegates ROS communication
+    OpenTeach robot wrapper for a single ORCA hand.
+    Auto-syncs with ORCA-core's YAML and delegates ROS communication
     to the DexArmControl class.
     """
 
-    # Load model config
-    _yaml = _load_model_yaml(MODEL)
-
-    # Joint names from ORCA-core config
-    JOINT_NAMES = tuple(_yaml["joint_ids"])
-
-    # Build (N, 2) array of joint limits [rad], in order
-    _jl = _yaml.get("joint_limits", {})
-    JOINT_LIMITS = np.array([
-        [
-            np.deg2rad(_jl[j]["lower"]),
-            np.deg2rad(_jl[j]["upper"])
-        ] if j in _jl else [np.deg2rad(-10), np.deg2rad(90)]
-        for j in JOINT_NAMES
-    ], dtype=float)
-
     def __init__(self):
+        # Load model config
+        yaml_config = _load_model_yaml(MODEL)
+
+        # Joint names from ORCA-core config
+        self.JOINT_NAMES = tuple(yaml_config["joint_ids"])
+
+        # Build (N, 2) array of joint limits [radians], in order
+        # The config uses 'joint_roms' which contains [lower, upper] in degrees for each joint
+        jroms = yaml_config.get("joint_roms", {})
+        self.JOINT_LIMITS = np.array([
+            [
+                np.deg2rad(jroms[j][0]),  # lower limit in degrees -> radians
+                np.deg2rad(jroms[j][1])   # upper limit in degrees -> radians
+            ] if j in jroms else [np.deg2rad(-10), np.deg2rad(90)]
+            for j in self.JOINT_NAMES
+        ], dtype=float)
+
         # Low-level ROS control bridge (talks to topics)
         self._control = DexArmControl()
 
-        # Neutral pose (0 rad for all joints)
-        self._home_pose = np.zeros(len(self.JOINT_NAMES))
+        # Neutral pose (use neutral_position from config if available, otherwise zeros)
+        neutral_config = yaml_config.get("neutral_position", {})
+        self._home_pose = np.array([
+            np.deg2rad(neutral_config.get(j, 0.0))
+            for j in self.JOINT_NAMES
+        ], dtype=float)
 
     # -----------------------------------------------------------------------
     # Open‑Teach robot interface
@@ -103,7 +115,7 @@ class OrcaHand:
         self.move_robot(self._home_pose)
 
     # -----------------------------------------------------------------------
-    # Helper
+    # Clamping utility, makes sure commands are within limits for safety
     # -----------------------------------------------------------------------
 
     def _clamp(self, q: np.ndarray) -> np.ndarray:
