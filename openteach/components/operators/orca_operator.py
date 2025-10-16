@@ -422,7 +422,7 @@ class OrcaOperator(Operator):
         self._host = host
         self._port = transformed_keypoints_port
         
-        # Initialize ZMQ subscriber for hand keypoints from Quest
+        # Initialize ZMQ subscriber for hand keypoints from Quest over network
         # Topic matches what the Quest tracking publisher sends
         self._transformed_hand_keypoint_subscriber = ZMQKeypointSubscriber(
             host=self._host,

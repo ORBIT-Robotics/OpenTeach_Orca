@@ -1,0 +1,3 @@
+[submodule "orca_core"]
+	path = orca_core
+	url = https://github.com/orcahand/orca_core.git

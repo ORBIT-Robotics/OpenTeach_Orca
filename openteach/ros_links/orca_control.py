@@ -1,7 +1,7 @@
 """
-orca_hand_link.py
+orca_control.py
 -----------------
-ROS 2 (other control files are ROS 1) bridge between OpenTeach and the ORCA Hand.
+ROS 2 bridge between OpenTeach and the ORCA Hand.
 
 Publishes:
     /orca_hand/command        (std_msgs/Float64MultiArray)
@@ -22,7 +22,7 @@ from sensor_msgs.msg import JointState
 from std_msgs.msg import Float64MultiArray
 
 
-class OrcaHandLink(Node):
+class DexArmControl(Node):
     """ROS 2 communication bridge for the ORCA Hand."""
 
     CMD_TOPIC = "/orca_hand/command"
@@ -69,7 +69,7 @@ class OrcaHandLink(Node):
 
 if __name__ == "__main__":
     rclpy.init()
-    node = OrcaHandLink()
+    node = DexArmControl()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
