@@ -68,7 +68,16 @@ sudo apt install python3-colcon-common-extensions
 
 ```bash
 # Install orca_core (from submodule in OpenTeach_Orca)
-cd /path/to/OpenTeach_Orca/orca_core
+# Replace <YOUR_REPO_PATH> with where you cloned OpenTeach_Orca
+
+# Linux/macOS:
+cd <YOUR_REPO_PATH>/OpenTeach_Orca/orca_core
+# Example: cd ~/projects/OpenTeach_Orca/orca_core
+
+# Windows:
+cd <YOUR_REPO_PATH>\OpenTeach_Orca\orca_core
+# Example: cd C:\Users\YourName\OpenTeach_Orca\orca_core
+
 pip install -e .
 
 # Verify installation
@@ -99,7 +108,16 @@ source /path/to/ros2_humble/setup.bash
 ### 1. Build the workspace
 
 ```bash
-cd ~/Desktop/FokusProjekt/TeleOp/OpenTeach_Orca/ros2_ws
+# Navigate to the ros2_ws directory
+# Replace <YOUR_REPO_PATH> with where you cloned OpenTeach_Orca
+
+# Linux/macOS:
+cd <YOUR_REPO_PATH>/OpenTeach_Orca/ros2_ws
+# Example: cd ~/projects/OpenTeach_Orca/ros2_ws
+
+# Windows (WSL/Ubuntu):
+cd <YOUR_REPO_PATH>/OpenTeach_Orca/ros2_ws
+# Example: cd /mnt/c/Users/YourName/OpenTeach_Orca/ros2_ws
 
 # Build with colcon
 colcon build
@@ -124,13 +142,19 @@ ros2 pkg list | grep orca
 
 ```bash
 # Terminal 1: Launch hardware node
-cd ~/Desktop/FokusProjekt/TeleOp/OpenTeach_Orca/ros2_ws
+# Replace <YOUR_REPO_PATH> with where you cloned OpenTeach_Orca
+
+# Linux/macOS:
+cd <YOUR_REPO_PATH>/OpenTeach_Orca/ros2_ws
 source install/setup.bash
 ros2 launch orca_hardware_interface orca_hardware.launch.py
 
 # Terminal 2: Run OpenTeach teleoperation
-cd ~/Desktop/FokusProjekt/TeleOp/OpenTeach_Orca
+cd <YOUR_REPO_PATH>/OpenTeach_Orca
 python teleop.py robot=orca
+
+# Windows (WSL/Ubuntu): Same commands, just use your Windows path
+# Example: cd /mnt/c/Users/YourName/OpenTeach_Orca/ros2_ws
 ```
 
 ### With Custom Model Path
