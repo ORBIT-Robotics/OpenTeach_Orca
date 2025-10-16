@@ -1,4 +1,5 @@
-host_address: '172.24.71.206'
+host_address: "YOUR_PC_IP"      # Find with: ifconfig
+oculus_ip: "QUEST_IP"           # Find in: Quest Settings
 left_xarm_ip: '192.168.86.216'
 right_xarm_ip: '192.168.86.230'
 
