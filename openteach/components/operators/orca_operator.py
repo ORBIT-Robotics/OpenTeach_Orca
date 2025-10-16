@@ -350,7 +350,7 @@ def quest21_to_orca17(
     assert kp_world.shape == (21, 3), f"Expected (21,3) keypoints, got {kp_world.shape}"
 
     # 1) Build palm frame and transform points
-    # Note: xhat, yhat, zhat are in WORLD frame for wrist estimation
+    # Note: xhat, yhat, zhat are in WORLD frame for wrist estimation. p = 3D positions of 21 MQ keypoints, transformed into palm frame
     p, xhat, yhat, zhat = _to_palm_frame(kp_world)
 
     # 2) Compute angles in a dict keyed by ORCA joint names
