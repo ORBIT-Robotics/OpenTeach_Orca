@@ -44,7 +44,7 @@ cd <YOUR_PROJECTS_FOLDER>
 git clone --recursive https://github.com/ORBIT-Robotics/OpenTeach_Orca.git
 cd OpenTeach_Orca
 
-# Windows (WSL/Ubuntu):
+# Windows (WSL/Ubuntu) - Run in WSL terminal, NOT PowerShell!:
 cd /mnt/c/Users/<YourName>/Projects
 git clone --recursive https://github.com/ORBIT-Robotics/OpenTeach_Orca.git
 cd OpenTeach_Orca
@@ -52,13 +52,16 @@ cd OpenTeach_Orca
 
 **Note:** `--recursive` is important! It pulls the `orca_core` submodule.
 
+**⚠️ WSL Users:** All Python, ROS, and OpenTeach commands must run in your **WSL/Ubuntu terminal**, not Windows PowerShell! PowerShell is only for USB passthrough (`usbipd`) and firewall configuration.
+
 ### 1.2 Install Python Dependencies
 
 ```bash
 # Create virtual environment (recommended)
 python3 -m venv venv
 source venv/bin/activate  # Linux/macOS
-# Or: venv\Scripts\activate  # Windows
+# Or: venv\Scripts\activate  # Windows CMD
+# NOTE: WSL users should use the Linux/macOS command in WSL terminal!
 
 # Install OpenTeach
 pip install -e .
