@@ -201,9 +201,18 @@ class OrcaHardwareNode(Node):
             return
         
         try:
-            # Read current joint positions from hardware (returns dict in degrees)
-            joint_pos_dict = self.hand.get_joint_pos()
-            
+            # Read current joint positions from hardware. Request as dict to
+            # ensure .get() is available. OrcaHand.get_joint_pos may optionally
+            # return a list when called with as_list=True; call with
+            # as_list=False to get a dict. Be defensive and handle lists too.
+            joint_pos = self.hand.get_joint_pos(as_list=False)
+
+            # If for some reason a list was returned, convert to dict
+            if isinstance(joint_pos, list):
+                joint_pos_dict = {name: val for name, val in zip(self.hand.joint_ids, joint_pos)}
+            else:
+                joint_pos_dict = joint_pos
+
             # Convert to radians for ROS
             joint_angles_rad = [
                 np.radians(joint_pos_dict.get(name, 0.0))

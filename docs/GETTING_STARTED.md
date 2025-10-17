@@ -469,7 +469,7 @@ cd <YOUR_REPO_PATH>/OpenTeach_Orca
 source venv/bin/activate
 
 # Run teleoperation
-python teleop.py robot=orca
+python3 teleop.py robot=orca
 ```
 
 **Expected output:**
