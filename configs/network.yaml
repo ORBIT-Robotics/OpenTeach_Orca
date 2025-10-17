@@ -1,10 +1,9 @@
-host_address: "YOUR_PC_IP"      # Find with: ifconfig
-oculus_ip: "QUEST_IP"           # Find in: Quest Settings
-left_xarm_ip: '192.168.86.216'
-right_xarm_ip: '192.168.86.230'
+host_address: "0.0.0.0"      # PC IP on ETH Zurich network is 10.5.7.57 :give this one in Oculus App
+oculus_ip: "10.253.160.136"           # Find in: Quest Settings
+
 
 # Transformation ports
-oculus_reciever_port: 8087
+oculus_receiver_port: 8087
 left_hand_receiver_port: 8110
 keypoint_port: 8088
 transformed_position_keypoint_port: 8089

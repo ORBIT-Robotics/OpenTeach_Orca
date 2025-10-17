@@ -17,6 +17,8 @@ import numpy as np
 import threading
 
 import rclpy
+if not rclpy.ok():
+    rclpy.init()
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Float64MultiArray
