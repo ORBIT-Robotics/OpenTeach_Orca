@@ -1,4 +1,4 @@
-host_address: "0.0.0.0"      # PC IP on ETH Zurich network is 10.5.7.57 :give this one in Oculus App
+host_address: "10.253.160.133"      # PC IP on ETH Zurich network is 10.5.7.57 :give this one in Oculus App
 oculus_ip: "10.253.160.136"           # Find in: Quest Settings
 
 

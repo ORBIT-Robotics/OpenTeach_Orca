@@ -1,6 +1,23 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: open-teach
 Version: 1.0.0
 Summary: Open-Teach:VR Teleoperation for Robotic Manipulation
 Requires-Python: >=3.8
 License-File: LICENSE
+Requires-Dist: hydra-core
+Requires-Dist: omegaconf
+Requires-Dist: numpy
+Requires-Dist: opencv-python
+Requires-Dist: pyzmq
+Requires-Dist: pyyaml
+Requires-Dist: matplotlib
+Requires-Dist: scipy
+Requires-Dist: pillow
+Requires-Dist: h5py
+Requires-Dist: pyrealsense2
+Requires-Dist: transforms3d
+Requires-Dist: blosc
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary

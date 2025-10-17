@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+from socket import socket
 import time
 from typing import List, Tuple
 
@@ -47,7 +48,7 @@ def bind_pull(context: zmq.Context, port: int) -> zmq.Socket:
     """Create a PULL socket bound on all local interfaces."""
     socket = context.socket(zmq.PULL)
     socket.setsockopt(zmq.CONFLATE, 1)  # keep only the freshest payload
-    socket.bind(f"tcp://0.0.0.0:{port}")
+    socket.bind(f"tcp://*:{port}")  #tells the PC to listen on all interfaces connected to the network
     return socket
 
 
