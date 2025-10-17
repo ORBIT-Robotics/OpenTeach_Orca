@@ -16,7 +16,7 @@ Before starting, ensure you have:
 
 ### Software (will install in this guide)
 - Python 3.8+
-- ROS 2 Humble
+- ROS 2 (Humble or Jazzy)
 - Git with LFS
 - orca_core library
 
@@ -76,9 +76,15 @@ python -c "from orca_core import OrcaHand; print('✓ orca_core installed')"
 python -c "from openteach.robot.orca import OrcaHand; print('✓ OpenTeach ORCA installed')"
 ```
 
-### 1.3 Install ROS 2 Humble
+### 1.3 Install ROS 2 (Humble or Jazzy)
 
-**Ubuntu/WSL:**
+**Check if ROS 2 is already installed:**
+```bash
+which ros2
+# If it shows /opt/ros/jazzy/bin/ros2 or /opt/ros/humble/bin/ros2, you're good!
+```
+
+**If not installed - Ubuntu/WSL:**
 ```bash
 # Add ROS 2 apt repository
 sudo apt update
@@ -88,12 +94,17 @@ sudo apt update && sudo apt install curl -y
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 sudo sh -c 'echo "deb [arch=amd64,arm64] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2.list'
 
-# Install ROS 2 Humble
+# Install ROS 2 Humble (or Jazzy)
 sudo apt update
 sudo apt install ros-humble-desktop python3-colcon-common-extensions
+# OR for Jazzy: sudo apt install ros-jazzy-desktop python3-colcon-common-extensions
 
-# Source ROS 2 (add to ~/.bashrc for permanent)
+# Source ROS 2 (replace 'humble' with 'jazzy' if you installed Jazzy)
 source /opt/ros/humble/setup.bash
+# OR: source /opt/ros/jazzy/setup.bash
+
+# Add to ~/.bashrc for permanent (adjust for your ROS version)
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 ```
 
 **macOS:**
@@ -147,7 +158,7 @@ Wireless LAN adapter Wi-Fi:
 **Common IP formats:**
 - `192.168.1.x` (most common)
 - `192.168.0.x` (some routers)
-- `10.0.0.x` (Apple routers, modern routers)
+- `10.0.0.x` (Apple routers, modern routers, institutional networks)
 
 **Example:** Your PC might be `192.168.1.234`
 
@@ -311,8 +322,10 @@ cd /mnt/c/Users/<YourName>/OpenTeach_Orca/ros2_ws
 ### 4.2 Source ROS 2
 
 ```bash
-# Ubuntu/WSL:
+# Ubuntu/WSL (use your installed ROS version - check with: which ros2):
 source /opt/ros/humble/setup.bash
+# OR if you have Jazzy:
+# source /opt/ros/jazzy/setup.bash
 
 # macOS (if installed locally):
 source /path/to/ros2_humble/setup.bash
@@ -413,8 +426,9 @@ Now everything is configured. Time to run!
 # Navigate to ROS workspace
 cd <YOUR_REPO_PATH>/OpenTeach_Orca/ros2_ws
 
-# Source ROS 2
+# Source ROS 2 (use your installed version: humble or jazzy)
 source /opt/ros/humble/setup.bash
+# OR: source /opt/ros/jazzy/setup.bash
 
 # Source workspace
 source install/setup.bash
@@ -568,7 +582,7 @@ python teleop.py robot=orca
 **Solutions:**
 1. **Source ROS 2:**
    ```bash
-   source /opt/ros/humble/setup.bash
+   source /opt/ros/humble/setup.bash  # or /opt/ros/jazzy/setup.bash
    source install/setup.bash
    ```
 2. **Check hardware node is running** (Terminal 1 should show `[INFO] ...`)
@@ -701,7 +715,7 @@ Before running, verify:
 - [ ] Repository cloned with `--recursive`
 - [ ] OpenTeach installed: `pip install -e .`
 - [ ] orca_core installed: `cd orca_core && pip install -e .`
-- [ ] ROS 2 Humble installed
+- [ ] ROS 2 (Humble or Jazzy) installed
 - [ ] ROS 2 workspace built: `colcon build`
 - [ ] PC IP address found and configured in `configs/network.yaml`
 - [ ] Quest IP address found and configured in `configs/network.yaml`

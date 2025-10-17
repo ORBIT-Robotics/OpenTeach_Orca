@@ -4,7 +4,7 @@ robot_name: orca_hand
 detector:
   _target_: openteach.components.detector.oculus.OculusVRHandDetector
   host: ${host_address}
-  oculus_port: ${oculus_reciever_port}
+  oculus_port: ${oculus_receiver_port}
   keypoint_pub_port: ${keypoint_port}
   button_port: ${resolution_button_port}
   button_publish_port: ${resolution_button_publish_port}
